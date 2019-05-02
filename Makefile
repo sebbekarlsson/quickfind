@@ -1,5 +1,5 @@
 flags = -g -Wall
-exec = quickfind.out
+exec = qf.out
 sources = $(wildcard src/*.c)
 objects = $(sources: .c=.o)
 
@@ -14,7 +14,7 @@ $(exec): $(objects)
 
 install:
 	make
-	mv $(exec) /usr/local/bin/quickfind
+	mv $(exec) /usr/local/bin/qf
 
 clean:
 	-rm *.out

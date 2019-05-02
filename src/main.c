@@ -21,8 +21,8 @@ char* char_to_string(char c) {
  * Goes through and compares every line in of file with the `content_query`
  * parameter, then returns a boolean (int).
  *
- * @param char* file_name
- * @param char* content_query
+ * @param const char* file_name
+ * @param const char* content_query
  *
  * @return int
  */
@@ -67,8 +67,8 @@ int file_line_by_line_compare(const char* file_name, const char* content_query)
  * This method only prints to stdout.
  *
  * @param const char* name
- * @param char* name_query
- * @param char* content_query
+ * @param const char* name_query
+ * @param const char* content_query
  */
 void do_query(const char *name, const char* name_query, const char* content_query)
 {
