@@ -9,7 +9,13 @@
 #define ERROR -1
 
 
-char* char_to_string(char c) {
+/** Converts a char to a string
+ *
+ * @param char c
+ * @return char*
+ */
+char* char_to_string(char c)
+{
     char* str = calloc(2, sizeof(char));
     str[0] = c;
     str[1] = '\0';
