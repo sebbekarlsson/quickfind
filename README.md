@@ -28,3 +28,9 @@
 > To install, simply clone down repository and run:
 
     $ sudo make install
+
+## Why?
+> The advantages of quickfind is that it does not try to be as smart as other
+> search tools, it does one thing and it does it good.  
+> Another advantage of quickfind is that the output is in vim-format (`path`:`line_number`),
+> so it is really easy to open found files in vim if needed.
