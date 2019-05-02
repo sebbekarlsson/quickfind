@@ -9,7 +9,8 @@
 #define ERROR -1
 
 
-/** Converts a char to a string
+/** 
+ * Converts a char to a string
  *
  * @param char c
  * @return char*
