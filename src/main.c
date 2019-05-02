@@ -84,9 +84,12 @@ void do_query(const char *name, const char* name_query, const char* content_quer
     if (!(dir = opendir(name)))
         return;
 
-    while ((entry = readdir(dir)) != NULL) {
+    while ((entry = readdir(dir)) != NULL)
+    {
         if (entry->d_type == DT_DIR)
         {
+            // current entry is a directory
+            
             char path[1024];
 
             if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
@@ -97,6 +100,8 @@ void do_query(const char *name, const char* name_query, const char* content_quer
         }
         else
         {
+            // current entry is a file
+            
             char* full = calloc(strlen(name) + strlen(entry->d_name) + 2, sizeof(char));
             sprintf(full, "%s/%s", name, entry->d_name);
 
