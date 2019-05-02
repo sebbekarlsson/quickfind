@@ -75,14 +75,16 @@ int file_line_by_line_compare(const char* file_name, const char* content_query)
  * @param const char* name
  * @param const char* name_query
  * @param const char* content_query
+ *
+ * @return int
  */
-void do_query(const char *name, const char* name_query, const char* content_query)
+int do_query(const char *name, const char* name_query, const char* content_query)
 {
     DIR *dir;
     struct dirent *entry;
 
     if (!(dir = opendir(name)))
-        return;
+        return 0;
 
     while ((entry = readdir(dir)) != NULL)
     {
@@ -122,6 +124,8 @@ void do_query(const char *name, const char* name_query, const char* content_quer
     }
 
     closedir(dir);
+
+    return 1;
 }
 
 int main(int argc, char* argv[])
@@ -132,7 +136,5 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    do_query(".", argv[1], argv[2]);
-
-    return 0;
+    return do_query(".", argv[1], argv[2]);
 }
