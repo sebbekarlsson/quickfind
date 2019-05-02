@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
 {
     if (argc < 3)
     {
-        printf("Usage: quickfind <name_query> <content_query>\n");
+        printf("Usage: qf <name_query> <content_query>\n");
         exit(1);
     }
 
