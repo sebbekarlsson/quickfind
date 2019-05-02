@@ -108,14 +108,16 @@ int do_query(const char *name, const char* name_query, const char* content_query
             sprintf(full, "%s/%s", name, entry->d_name);
 
             // comparing the name
-            if (strstr(full, name_query) == NULL) {
+            if (strstr(full, name_query) == NULL)
+            {
                 free(full);
                 continue;
             }
 
             // comparing the content
             int line_number;
-            if ((line_number = file_line_by_line_compare(full, content_query)) != ERROR) {
+            if ((line_number = file_line_by_line_compare(full, content_query)) != ERROR)
+            {
                 printf("%s:%d\n", full, line_number);
             }
 
