@@ -151,5 +151,8 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    return do_query(".", argv[1], argv[2]);
+    if (!do_query(".", argv[1], argv[2]))
+        return 1;
+
+    return 0;
 }
