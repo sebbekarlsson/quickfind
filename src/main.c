@@ -6,7 +6,16 @@
 #include <stdlib.h>
 
 
-#define ERROR -1
+/**
+ * @brief Structure that contains a list of integers,
+ * and the length of that list.
+ *
+ * This struct is used to collect line numbers where a query matches.
+ */
+typedef struct RESULT_STRUCT {
+    int* line_numbers;
+    size_t size;
+} result_t;
 
 
 /** 
@@ -33,7 +42,7 @@ char* char_to_string(char c)
  *
  * @return int
  */
-int file_line_by_line_compare(const char* file_name, const char* content_query)
+result_t* file_line_by_line_compare(const char* file_name, const char* content_query)
 {
     FILE *fp;
 
@@ -45,9 +54,12 @@ int file_line_by_line_compare(const char* file_name, const char* content_query)
         //
         // perror("Could not open file.\n");
         // printf("Filename: %s\n", file_name);
-        // fclose(fp);
-        return ERROR;
+        return (void*) 0;
     }
+
+    result_t* result = calloc(1, sizeof(struct RESULT_STRUCT));
+    result->size = 0;
+    result->line_numbers = calloc(1, sizeof(int));
 
     int line_counter = 1;  // lines starts at 1 ...
     char line[1024];
@@ -56,8 +68,9 @@ int file_line_by_line_compare(const char* file_name, const char* content_query)
     {
         if (strstr(line, content_query) != NULL)
         {
-            fclose(fp);
-            return line_counter;
+            result->size += 1;
+            result->line_numbers = realloc(result->line_numbers, result->size * sizeof(int));
+            result->line_numbers[result->size - 1] = line_counter;
         }
 
         line_counter += 1;
@@ -65,7 +78,7 @@ int file_line_by_line_compare(const char* file_name, const char* content_query)
 
     fclose(fp);
 
-    return ERROR;
+    return result;
 }
 
 /**
@@ -116,10 +129,14 @@ int do_query(const char *name, const char* name_query, const char* content_query
             }
 
             // comparing the content
-            int line_number;
-            if ((line_number = file_line_by_line_compare(full, content_query)) != ERROR)
+            result_t* result;
+            if ((result = file_line_by_line_compare(full, content_query)) != (void*) 0)
             {
-                printf("%s:%d\n", full, line_number);
+                for (int i = 0; i < result->size; i++)
+                    printf("%s:%d\n", full, result->line_numbers[i]);
+
+                free(result->line_numbers);
+                free(result);
             }
 
             free(full);
