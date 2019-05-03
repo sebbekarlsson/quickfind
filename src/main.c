@@ -48,18 +48,15 @@ result_t* file_line_by_line_compare(const char* file_name, const char* content_q
 
     fp = fopen(file_name, "r");
 
-    if (fp == NULL)
-    {
-        // We dont care about the error, just continue...
-        //
-        // perror("Could not open file.\n");
-        // printf("Filename: %s\n", file_name);
-        return (void*) 0;
-    }
-
     result_t* result = calloc(1, sizeof(struct RESULT_STRUCT));
     result->size = 0;
     result->line_numbers = calloc(1, sizeof(int));
+
+    if (fp == NULL)
+    {
+        // We dont care about the error, just continue...
+        return result;
+    } 
 
     int line_counter = 1;  // lines starts at 1 ...
     char line[1024];
@@ -118,28 +115,26 @@ int do_query(const char *name, const char* name_query, const char* content_query
         {
             // current entry is a file
             
-            char* full = calloc(strlen(name) + strlen(entry->d_name) + 2, sizeof(char));
-            sprintf(full, "%s/%s", name, entry->d_name);
+            char* full_path = calloc(strlen(name) + strlen(entry->d_name) + 2, sizeof(char));
+            sprintf(full_path, "%s/%s", name, entry->d_name);
 
             // comparing the name
-            if (strstr(full, name_query) == NULL)
+            if (strstr(full_path, name_query) == NULL)
             {
-                free(full);
+                free(full_path);
                 continue;
             }
 
             // comparing the content
-            result_t* result;
-            if ((result = file_line_by_line_compare(full, content_query)) != (void*) 0)
-            {
-                for (int i = 0; i < result->size; i++)
-                    printf("%s:%d\n", full, result->line_numbers[i]);
+            result_t* result = file_line_by_line_compare(full_path, content_query);
 
-                free(result->line_numbers);
-                free(result);
-            }
+            // print result
+            for (int i = 0; i < result->size; i++)
+                printf("%s:%d\n", full_path, result->line_numbers[i]);
 
-            free(full);
+            free(result->line_numbers);
+            free(result);
+            free(full_path);
         }
     }
 
